@@ -1,0 +1,151 @@
+1.Store a function in a variable
+::function name
+
+2.Redefine the function with a lambda expression
+val variable name ={
+function body
+}
+
+Examples:
+fun main() {
+    val trickFunction = ::trick
+}
+
+fun trick() {
+    println("No treats!")
+}
+---------------------------------------
+fun main() {
+    val trickFunction = trick
+    trick()
+    trickFunction()
+}
+val trick = {
+    println("No treats!")
+}
+==========================================================
+3.Use functions as a data type
+(parameters(optional)) -> return type
+
+Example:
+fun main() {
+    val trickFunction = trick
+    trick()
+    trickFunction()
+    treat()
+}
+
+val trick = {
+    println("No treats!")
+}
+val treat: () -> Unit = {
+    println("Have a treat!")
+}
+
+4.Use a function as a return type
+fun function name(): function type{
+    //code
+    return name of another function
+}
+Example:
+fun main() {
+    val treatFunction = trickOrTreat(false)
+    val trickFunction = trickOrTreat(true)
+    treatFunction()
+    trickFunction()
+}
+
+fun trickOrTreat(isTrick: Boolean): () -> Unit {
+     if (isTrick) {
+            return trick
+        } else {
+            return treat
+        }
+}
+
+val trick = {
+    println("No treats!")
+}
+
+val treat = {
+    println("Have a treat!")
+}
+
+5.Pass a function to another function as an argument
+(parameter types only) (String, Int) -> Int
+
+val function name = {parameter1, parameter2 -> function body
+}
+
+Example:
+fun trickOrTreat(isTrick: Boolean, extraTreat: (Int) -> String): () -> Unit {
+    if (isTrick) {
+        return trick
+    } else {
+        println(extraTreat(5))
+        return treat
+    }
+}
+fun main() {
+    val coins: (Int) -> String = { quantity ->
+        "$quantity quarters"
+    }
+
+    val cupcake: (Int) -> String = {quantity ->
+        "Have a cupcake!"
+    }
+
+    val treatFunction = trickOrTreat(false)
+    val trickFunction = trickOrTreat(true)
+    treatFunction()
+    trickFunction()
+}
+
+6.ShortHand
+val cupcake: (Int) -> String = {quantity ->
+        "Have a cupcake!"
+}
+ val cupcake: (Int) -> String = {
+     "Have a cupcake!"
+ }
+-------------------------------------------
+ val coins: (Int) -> String = {
+     "$quantity quarters"
+ }
+ val coins: (Int) -> String = {
+     "$it quarters"
+ }
+ -------------------------------------------
+fun main() {
+    val coins: (Int) -> String = {
+        "$it quarters"
+    }
+    val treatFunction = trickOrTreat(false, { "$it quarters" })
+    val trickFunction = trickOrTreat(true, null)
+    treatFunction()
+    trickFunction()
+}
+fun main() {
+    val treatFunction = trickOrTreat(false, { "$it quarters" })
+    val trickFunction = trickOrTreat(true, null)
+    treatFunction()
+    trickFunction()
+}
+
+ 7. Nullable function types
+ ((parameters(optional) -> return type)?
+
+ fun trickOrTreat(isTrick: Boolean, extraTreat: ((Int) -> String)?): () -> Unit {
+     if (isTrick) {
+         return trick
+     } else {
+         if (extraTreat != null) {
+             println(extraTreat(5))
+         }
+         return treat
+     }
+ }
+
+ 8.Use trailing lambda syntax
+ trickOrTreat(false, lambda exp)
+ trickOrTreat(false) lambda exp
